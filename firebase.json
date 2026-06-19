@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/amusicalarges-fe",
+    "public": "dist/amusicalarges-fe/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
