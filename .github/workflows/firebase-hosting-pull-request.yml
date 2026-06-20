@@ -2,7 +2,7 @@ name: Deploy to Firebase Hosting on push
 on:
   push:
     branches: [ "main" ]
-  pull-request:
+  pull_request:
     branches: [ "main" ]
 permissions:
   checks: write
