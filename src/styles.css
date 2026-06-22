@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --background: #ffffff;
+    --text: #1a1a1a;
+    --primary: #45d2f0;
+    --alt-color: #e0f7fc;
+    --nav-bg: #2bbada;
+    --footer-heading: #0f1e22;
+    --section-heading: #0a8fa8;
+}
+
+.dark {
+    --background: #0f1e22;
+    --text: #e8f4f7;
+    --primary: #45d2f0;
+    --alt-color: #1a2f35;
+    --nav-bg: #1a7a8a;
+    --footer-heading: #45d2f0;
+    --section-heading: #45d2f0;
+}
+body {
+    background-color: var(--background);
+    color: var(--text);
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}

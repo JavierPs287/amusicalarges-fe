@@ -4,7 +4,7 @@ nav {
   align-items: center;
   padding: 0 2rem;
   height: 64px;
-  background-color: #46d1f076;
+  background-color: var(--nav-bg);
 
   position: fixed;
   top: 0;
@@ -14,7 +14,7 @@ nav {
 
   border-radius: 0 0 20px 20px;
 
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 nav.hidden {
@@ -35,18 +35,24 @@ nav.hidden {
 }
 
 .links a {
-  color: white;
+  color: var(--text);
   text-decoration: none;
 }
 
 .links a:hover {
   opacity: 0.7;
 }
-.links a {
-  color: #152125;
-  text-decoration: none;
+
+.dark-logo {
+  display: none;
 }
 
-.links a:hover {
-  opacity: 0.7;
+@media (prefers-color-scheme: dark) {
+  .light-logo {
+    display: none;
+  }
+
+  .dark-logo {
+    display: block;
+  }
 }
