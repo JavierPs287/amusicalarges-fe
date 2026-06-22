@@ -16,16 +16,18 @@ export class Home implements AfterViewInit {
       return;
     }
 
-    const secciones = document.querySelectorAll('.seccion');
+    setTimeout(() => {
+      const secciones = document.querySelectorAll('.seccion');
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.2 });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.05 });
 
-    secciones.forEach(s => observer.observe(s));
+      secciones.forEach(s => observer.observe(s));
+    }, 100);
   }
 }
