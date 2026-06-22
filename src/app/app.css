@@ -17,6 +17,10 @@
   margin-bottom: 2rem;
 }
 
+.content {
+  padding-top: 64px; /* misma altura que el navbar */
+}
+
 h1 {
   font-size: 2.5rem;
   color: #000000; /* Puedes cambiar esto por el color corporativo de la asociación */
