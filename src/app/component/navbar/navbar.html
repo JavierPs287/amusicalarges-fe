@@ -1,8 +1,79 @@
-<nav [class.hidden]="!visible">
+<nav 
+  [class.hidden]="!visible"
+  [class.menu-open]="menuOpen">
+
   <img src="logo.png" alt="Logo" class="logo light-logo">
   <img src="logo-oscuro.png" alt="Logo" class="logo dark-logo">
 
-  <ul class="links">
-    <li><a routerLink="/home">Home</a></li>
-  </ul>
+
+  @if (!isMobile) {
+
+    <ul class="links">
+      <li>
+        <a routerLink="/home">Home</a>
+      </li>
+    </ul>
+
+  } @else {
+
+    <button 
+      class="hamburger" 
+      (click)="toggleMenu()">
+
+      @if (!menuOpen) {
+
+        <!-- Icono hamburguesa -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+
+        </svg>
+
+      } @else {
+
+        <!-- Icono cerrar -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+
+        </svg>
+
+      }
+
+    </button>
+
+  }
+
 </nav>
+
+
+@if (isMobile && menuOpen) {
+
+  <div class="mobile-menu">
+
+    <a 
+      routerLink="/home"
+      (click)="menuOpen=false">
+      Home
+    </a>
+
+  </div>
+
+}

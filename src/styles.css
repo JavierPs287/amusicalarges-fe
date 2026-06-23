@@ -4,6 +4,8 @@
     --primary: #45d2f0;
     --alt-color: #e0f7fc;
     --nav-bg: #2bbada;
+    --mobile-threebars: #22525f;
+    --mobile-threebars-shade: #131f22;
     --footer-heading: #0f1e22;
     --section-heading: #0a8fa8;
 }
@@ -13,7 +15,9 @@
     --text: #e8f4f7;
     --primary: #45d2f0;
     --alt-color: #1a2f35;
-    --nav-bg: #1a7a8a;
+    --nav-bg: #1a7a8a;    
+    --mobile-threebars: #18383f;
+    --mobile-threebars-shade: #0e1819;
     --footer-heading: #45d2f0;
     --section-heading: #45d2f0;
 }
