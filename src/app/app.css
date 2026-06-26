@@ -6,6 +6,7 @@ footer {
   transition: background-color 0.3s ease;
 }
 
+
 .footer-contenido {
   display: flex;
   justify-content: space-around;
@@ -14,10 +15,12 @@ footer {
   margin-bottom: 2rem;
 }
 
+
 .footer-col h3 {
   color: var(--footer-heading);
   margin-bottom: 0.5rem;
 }
+
 
 .footer-col p {
   margin: 0.3rem 0;
@@ -25,20 +28,24 @@ footer {
   color: var(--text);
 }
 
+
 .footer-col a {
   color: var(--text);
   text-decoration: none;
   opacity: 0.85;
 }
 
+
 .footer-col a:hover {
   color: var(--text);
   opacity: 1;
 }
 
+
 .footer-col a:visited {
   color: var(--text);
 }
+
 
 .footer-copy {
   text-align: center;
@@ -47,4 +54,73 @@ footer {
   border-top: 1px solid var(--primary);
   padding-top: 1rem;
   color: var(--text);
+}
+
+
+/* ===========================
+   MÓVIL / TABLET VERTICAL
+   =========================== */
+
+@media (max-width: 900px) {
+
+  footer {
+
+    padding: 2rem 1.5rem 1rem;
+
+  }
+
+
+  .footer-contenido {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-start;
+
+    align-items: flex-start;
+
+    gap: 1.5rem;
+
+  }
+
+
+  .footer-col {
+
+    width: 100%;
+
+    text-align: left;
+
+  }
+
+
+  .footer-col h3 {
+
+    text-align: left;
+
+  }
+
+
+  .footer-col p {
+
+    text-align: left;
+
+  }
+
+
+  .footer-col a {
+
+    display: inline-flex;
+
+    align-items: center;
+
+  }
+
+
+  .footer-copy {
+
+    text-align: left;
+
+  }
+
 }

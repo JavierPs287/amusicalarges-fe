@@ -63,6 +63,11 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {            
+              "allowedHosts": [
+                "https://wf5mhkf1-4200.uks1.devtunnels.ms/"
+              ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "amusicalarges-fe:build:production"
