@@ -33,7 +33,7 @@ export class ActualidadService {
         }
       }
     }
-    console.warn('[ActualidadService] La respuesta del BE no tiene la forma esperada:', datos);
+    // console.warn('[ActualidadService] La respuesta del BE no tiene la forma esperada:', datos);
     return [];
   }
 
