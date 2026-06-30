@@ -1,402 +1,159 @@
 nav {
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 0 2rem;
-
   height: 64px;
-
   background-color: var(--nav-bg);
-
   position: fixed;
-
   top: 0;
   left: 0;
   right: 0;
-
   z-index: 100;
-
   border-radius: 0 0 20px 20px;
-
-  transition:
-    transform .3s ease,
-    background-color .3s ease,
-    border-radius .2s ease;
+  transition: transform .3s ease, background-color .3s ease, border-radius .2s ease;
 }
-
 
 nav.menu-open {
-
   border-radius: 0;
-
 }
-
 
 nav.hidden {
-
   transform: translateY(-100%);
-
 }
-
 
 /* LOGOS */
-
 .logo {
-
   height: 40px;
-
   width: auto;
-
 }
-
 
 .dark-logo {
-
   display: none;
-
 }
-
 
 @media (prefers-color-scheme: dark) {
-
   .light-logo {
-
     display: none;
-
   }
-
-
   .dark-logo {
-
     display: block;
-
   }
-
 }
 
-
-
-/* LINKS DESKTOP */
-
+/* LINKS ORDENADOR */
 .links {
-
   list-style: none;
-
   margin: 0;
-
   padding: 0;
-
-
   display: flex;
-
   align-items: center;
-
   gap: 1rem;
-
 }
-
 
 .links li {
-
   display: flex;
-
 }
-
-
 
 .links a {
-
   position: relative;
-
-
   color: var(--text);
-
-
   text-decoration: none;
-
-
   padding: .5rem 1rem;
-
-
   font-size: 1rem;
-
-
   font-weight: 500;
-
-
   border-radius: 12px;
-
-
-  transition:
-
-    color .25s ease,
-
-    background-color .25s ease;
-
+  transition: color .25s ease, background-color .25s ease;
 }
-
-
 
 .links a:hover {
-
-  background-color:
-
-    rgba(128,128,128,.12);
-
+  background-color: rgba(128,128,128,.12);
 }
 
-
-/* Línea inferior animada */
-
+/* LINEA INFERIOR ANIMADA */
 .links a::after {
-
   content: "";
-
-
   position: absolute;
-
-
   left: 50%;
-
   bottom: 4px;
-
-
   width: 0;
-
   height: 2px;
-
-
   background-color: var(--primary);
-
-
   transform: translateX(-50%);
-
-
-  transition:
-
-    width .25s ease;
-
+  transition: width .25s ease;
 }
-
 
 .links a:hover::after {
-
   width: 60%;
-
 }
 
-
-
-
-/* BOTÓN HAMBURGUESA */
-
+/* BOTON HAMBURGUESA */
 .hamburger {
-
   width: 48px;
-
   height: 48px;
-
-
   border: none;
-
   border-radius: 50%;
-
-
-  background:
-
-    var(--mobile-threebars);
-
-
+  background: var(--mobile-threebars);
   color: white;
-
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
-
   cursor: pointer;
-
-
-  box-shadow:
-
-    0 4px 14px rgba(0,0,0,.25);
-
-
-  transition:
-
-    transform .2s ease,
-
-    box-shadow .2s ease;
-
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-
-
 
 .hamburger:hover {
-
   transform: scale(1.08);
-
 }
-
-
 
 .hamburger:active {
-
   transform: scale(.95);
-
 }
 
-
-
-
-/* MENÚ MÓVIL */
-
+/* MENÚ MOVIL */
 .mobile-menu {
-
   position: fixed;
-
-
   top: 64px;
-
-
   left: 0;
-
   right: 0;
-
-
-  background-color:
-
-    var(--nav-bg);
-
-
+  background-color: var(--nav-bg);
   display: flex;
-
-
   flex-direction: column;
-
-
   z-index: 99;
-
-
   overflow: hidden;
-
-
-  border-radius:
-
-    0 0 20px 20px;
-
-
-  box-shadow:
-
-    0 10px 20px rgba(0,0,0,.12);
-
-
-  animation:
-
-    slideDown .2s ease;
-
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+  animation: slideDown .2s ease;
 }
-
-
 
 .mobile-menu a {
-
-
-  margin:
-
-    .3rem 1rem;
-
-
-  padding:
-
-    1rem;
-
-
+  margin: .3rem 1rem;
+  padding: 1rem;
   text-decoration: none;
-
-
-  color:
-
-    var(--text);
-
-
-  font-size:
-
-    1.05rem;
-
-
-  font-weight:
-
-    500;
-
-
-  border-radius:
-
-    12px;
-
-
-  transition:
-
-    background-color .2s ease,
-
-    transform .2s ease;
-
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-align: center;
+  transition: background-color .2s ease, transform .2s ease;
 }
-
-
 
 .mobile-menu a:hover {
-
-
-  background-color:
-
-    rgba(128,128,128,.12);
-
+  background-color: rgba(128,128,128,.12);
 }
-
-
 
 .mobile-menu a:active {
-
-
-  transform:
-
-    scale(.98);
-
+  transform: scale(.98);
 }
 
-
-
-
-/* ANIMACIÓN MENÚ */
-
 @keyframes slideDown {
-
-
   from {
-
     opacity: 0;
-
-    transform:
-
-      translateY(-10px);
-
+    transform: translateY(-10px);
   }
-
-
   to {
-
     opacity: 1;
-
-    transform:
-
-      translateY(0);
-
+    transform: translateY(0);
   }
-
 }

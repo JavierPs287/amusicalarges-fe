@@ -1,67 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActualidadService } from '../../services/actualidad.service';
-import { FacebookContent } from '../../model/facebookContent.model';
+import { Component, ChangeDetectorRef } from '@angular/core';
+  import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+  import { ActualidadService } from '../../services/actualidad.service';
+  import { FacebookContent } from '../../model/facebookContent.model';
 
-@Component({
-  selector: 'app-actualidad',
-  standalone: true,
-  templateUrl: './actualidad.html',
-  styleUrl: './actualidad.css'
-})
-export class Actualidad implements OnInit {
+  @Component({
+    selector: 'app-actualidad',
+    standalone: true,
+    templateUrl: './actualidad.html',
+    styleUrl: './actualidad.css'
+  })
+  export class Actualidad {
 
-  contenidos: FacebookContent[] = [];
+    contenidos: FacebookContent[] = [];
+    cargando = true;
+    errorCarga: string | null = null;
 
-  // Datos de ejemplo si no hay nada en BD
-  private readonly contenidosEjemplo: FacebookContent[] = [
-    {
-      titulo: 'Reel de la Asociación Musical Arges',
-      fecha: 'Junio 2026',
-      tipo: 'video',
-      url: 'https://www.facebook.com/reel/1322297286781125/'
-    },
-    {
-      titulo: 'Nueva publicación',
-      fecha: 'Junio 2026',
-      tipo: 'post',
-      url: 'https://www.facebook.com/AsociacionMusicalArges/posts/pfbid0dTE4HVbKnVZiudZL5SLSWzpRFSVzj5dmLxhbKkc9KErB6mTjLoT7vy5AGSGHC4LCl'
+    constructor(
+      private sanitizer: DomSanitizer,
+      private cdr: ChangeDetectorRef,
+      private actualidadService: ActualidadService
+    ) {
+      this.cargarContenidos();
     }
-  ];
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private actualidadService: ActualidadService
-  ) {}
+    cargarContenidos(): void {
+      this.cargando = true;
+      this.errorCarga = null;
+      this.actualidadService.getContenidos().subscribe({
+        next: (datos) => {
+          this.contenidos = datos;
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error cargando contenidos:', error);
+          this.errorCarga = error?.message ?? 'No se pudieron cargar los contenidos.';
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }
 
-  ngOnInit(): void {
-    this.cargarContenidos();
-  }
-
-  cargarContenidos(): void {
-    this.actualidadService.getContenidos().subscribe({
-      next: (datos) => {
-        // console.log("Datos recibidos del backend:", datos);
-        this.contenidos = datos.length ? datos : this.contenidosEjemplo;
-      },
-      error: (error) => {
-        // console.error("Error cargando contenidos:", error);
-        this.contenidos = this.contenidosEjemplo;
+    getFacebookEmbed(contenido: FacebookContent): SafeResourceUrl {
+      let embed = '';
+      if (contenido.tipo === 'video') {
+        embed = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(contenido.url)}&show_text=true&width=400`;
+      } else {
+        embed = `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(contenido.url)}&show_text=true&width=450`;
       }
-    });
-  }
-
-  getFacebookEmbed(contenido: FacebookContent): SafeResourceUrl {
-
-    let embed = '';
-
-    if (contenido.tipo === 'video') {
-      embed = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(contenido.url)}&show_text=true&width=500`;
-    } else {
-      embed = `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(contenido.url)}&show_text=true&width=500`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(embed);
     }
-
-    return this.sanitizer.bypassSecurityTrustResourceUrl(embed);
   }
-
-}
