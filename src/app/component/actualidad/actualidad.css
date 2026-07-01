@@ -1,6 +1,6 @@
-/* TODO: corregir tamaño iframe para no dejar huecos invisibles */
 .actualidad {
   padding: 3rem 2rem;
+  margin-top: 2rem;
 }
 
 .actualidad h2 {
@@ -138,13 +138,15 @@
 @media(max-width:900px) {
 
   .social-buttons {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
   }
 
   .social-buttons a {
-    width: 260px;
-    justify-content: center;
+    width: 50px;
+    height: 50px;
   }
 
 }

@@ -77,3 +77,16 @@
   line-height: 1.7;
   color: var(--text);
 }
+
+/* Section Link */
+.seccion-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit; /* hereda el color del texto de la sección */
+}
+
+.seccion-link:hover {
+  opacity: 0.85; /* opcional: feedback visual al pasar el ratón */
+}

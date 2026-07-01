@@ -12,5 +12,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'actualidad',
     renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'calendario',
+    renderMode: RenderMode.Prerender
   }
 ];
