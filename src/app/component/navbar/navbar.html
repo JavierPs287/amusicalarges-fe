@@ -24,48 +24,16 @@
 
   } @else {
 
-    <button 
-      class="hamburger" 
-      (click)="toggleMenu()">
-
-      @if (!menuOpen) {
-
-        <!-- Icono hamburguesa -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2">
-
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-
-        </svg>
-
-      } @else {
-
-        <!-- Icono cerrar -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2">
-
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-
-        </svg>
-
-      }
-
-    </button>
+    <label class="burger" for="burger">
+      <input
+        type="checkbox"
+        id="burger"
+        [checked]="menuOpen"
+        (change)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
 
   }
 
