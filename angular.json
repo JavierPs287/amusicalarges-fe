@@ -64,7 +64,7 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {            
+          "options": {
               "allowedHosts": [
                 "https://wf5mhkf1-4200.uks1.devtunnels.ms/"
               ]

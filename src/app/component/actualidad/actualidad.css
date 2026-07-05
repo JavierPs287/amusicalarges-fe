@@ -1,6 +1,7 @@
 .actualidad {
   padding: 3rem 2rem;
   margin-top: 2rem;
+  box-sizing: border-box;
 }
 
 .actualidad h2 {
@@ -22,11 +23,12 @@
   border-radius: 20px;
   padding: 1.5rem;
   width: 450px;
-  height: 750px;
+  /* Altura automática: la marca el aspect-ratio del video-container, no un valor fijo */
+  height: auto;
   box-shadow: 0 5px 15px rgba(0,0,0,.12);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .video-card h3 {
@@ -42,29 +44,39 @@
 }
 
 .video-container {
-  flex: 1;
   width: 100%;
+  max-width: 100%;
   display: flex;
   justify-content: center;
-  overflow: hidden;
   border-radius: 15px;
+  box-sizing: border-box;
+  /* El alto ya no se fuerza al del padre: lo define el aspect-ratio,
+     calculado a partir del ancho real de la tarjeta. Así el iframe
+     nunca queda recortado ni con espacio vacío sobrante. */
 }
 
 .video-container iframe {
   width: 100%;
+  max-width: 100%;
   height: 100%;
   border: none;
   border-radius: 15px;
+  display: block;
 }
 
-/* Reels verticales */
-.video-container.video iframe {
-  max-width: 450px;
+/* Reels verticales: relación de aspecto típica de un vídeo vertical (9:16) */
+.video-container.video {
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
 }
 
-/* Posts normales */
-.video-container.post iframe {
-  max-width: 500px;
+/* Posts normales: Facebook incluye texto/imagen y su alto real varía según
+   el contenido, así que usamos una proporción aproximada y, si el contenido
+   interno resulta más alto, permitimos scroll en vez de recortarlo en silencio. */
+.video-container.post {
+  aspect-ratio: 4 / 5;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 @media(max-width:1200px) {
@@ -77,6 +89,7 @@
   .videos {
     grid-template-columns: 1fr;
     justify-content: stretch;
+    row-gap: 2rem;
   }
 
   .actualidad {
@@ -85,7 +98,34 @@
 
   .video-card {
     width: 100%;
-    height: 720px;
+    max-width: 100%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .video-container,
+  .video-container iframe,
+  .video-container.video iframe,
+  .video-container.post iframe {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Móviles pequeños: la tarjeta se hace aún más compacta */
+@media(max-width:480px) {
+  .actualidad {
+    padding: 1.5rem .75rem;
+  }
+
+  .video-card {
+    height: auto;
+    padding: .75rem;
+    border-radius: 14px;
+  }
+
+  .video-card h3 {
+    font-size: 1rem;
   }
 }
 

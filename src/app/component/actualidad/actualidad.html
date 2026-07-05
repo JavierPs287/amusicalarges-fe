@@ -4,7 +4,7 @@
   <div class="videos">
     @for(contenido of contenidos; track contenido.url) {
 
-      <article class="video-card">
+      <article class="video-card" #videoCardRef [attr.data-url]="contenido.url">
 
         <h3>{{contenido.titulo}}</h3>
 
@@ -12,7 +12,7 @@
           <span class="fecha">{{contenido.fecha | date:'d MMMM y':'es'}}</span>
         }
 
-        <div class="video-container">
+        <div class="video-container" [class.video]="contenido.tipo === 'video'" [class.post]="contenido.tipo !== 'video'">
 
           <iframe
             [src]="getFacebookEmbed(contenido)"
