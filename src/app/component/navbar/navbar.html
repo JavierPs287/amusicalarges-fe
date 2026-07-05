@@ -10,6 +10,10 @@
 
     <ul class="links">
       <li>
+        <a routerLink="/infobanda">Sobre Nosotros</a>
+      </li>
+
+      <li>
         <a routerLink="/actualidad">Actualidad</a>
       </li>
 
@@ -43,6 +47,12 @@
 @if (isMobile && menuOpen) {
 
   <div class="mobile-menu">
+
+    <a 
+      routerLink="/infobanda"
+      (click)="menuOpen=false">
+      Sobre Nosotros
+    </a>
 
     <a 
       routerLink="/actualidad"

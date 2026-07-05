@@ -101,23 +101,15 @@
   margin: 0 auto;
 }
 
-/* Responsive: el hero se adapta a la foto en pantallas pequeñas */
+/* Responsive: la foto sigue de fondo también en pantallas pequeñas */
 @media (max-width: 768px) {
   .hero {
-    min-height: 0;
-    height: auto;
-    padding: 1.5rem 1rem 2rem;
+    min-height: 60vh;
+    padding: 1.5rem 1rem;
   }
 
   .hero-img {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    height: auto;
-    max-height: 60vh;
-    object-fit: contain;
-    border-radius: 16px;
-    margin-bottom: 1.5rem;
+    opacity: 0.5;
   }
 
   .hero h1 {

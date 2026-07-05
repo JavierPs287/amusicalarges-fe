@@ -16,5 +16,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'calendario',
     renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'infobanda',
+    renderMode: RenderMode.Prerender
   }
 ];
