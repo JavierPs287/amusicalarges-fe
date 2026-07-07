@@ -20,5 +20,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'infobanda',
     renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'apuntate',
+    renderMode: RenderMode.Prerender
   }
 ];
