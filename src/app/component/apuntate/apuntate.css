@@ -45,7 +45,7 @@
 	padding: 2.5rem;
 	border-radius: 28px;
 	background:
-		linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+		linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08)),
 		var(--nav-bg);
 	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
 	border: 1px solid rgba(255, 255, 255, 0.08);
@@ -57,7 +57,7 @@
 	gap: 0.5rem;
 	padding: 0.45rem 0.9rem;
 	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.2);
 	color: var(--footer-heading);
 	font-size: 0.9rem;
 	font-weight: 700;
@@ -110,9 +110,9 @@
 }
 
 .secondary-btn {
-	background: rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.22);
 	color: var(--text);
-	border: 1px solid rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(15, 30, 34, 0.12);
 }
 
 .primary-btn:hover,
@@ -130,8 +130,8 @@
 .highlight {
 	padding: 1.2rem;
 	border-radius: 20px;
-	background: rgba(255, 255, 255, 0.05);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.2);
+	border: 1px solid rgba(15, 30, 34, 0.08);
 }
 
 .number {
@@ -160,13 +160,13 @@
 	min-height: 240px;
 	padding: 1.6rem;
 	border-radius: 24px;
-	background: var(--nav-bg);
+	background: rgba(255, 255, 255, 0.55);
 	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-	border: 1px solid rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(15, 30, 34, 0.08);
 }
 
 .info-card.accent {
-	background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)), var(--nav-bg);
+	background: linear-gradient(160deg, rgba(69, 210, 240, 0.18), rgba(255, 255, 255, 0.45));
 }
 
 .info-card h2 {
@@ -191,10 +191,6 @@
 	margin-top: 0.85rem;
 }
 
-.quote {
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
-}
-
 .contact-band {
 	max-width: 1100px;
 	margin: 1.75rem auto 0;
@@ -203,8 +199,8 @@
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 1rem;
 	border-radius: 22px;
-	background: rgba(255, 255, 255, 0.06);
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	background: rgba(255, 255, 255, 0.42);
+	border: 1px solid rgba(15, 30, 34, 0.08);
 }
 
 .contact-band > div {
@@ -229,6 +225,47 @@
 
 .contact-band a:hover {
 	text-decoration: underline;
+}
+
+:host-context(body:not(.dark)) .apuntate::after {
+	opacity: 0.3;
+	background: radial-gradient(circle, rgba(15, 30, 34, 0.12), transparent 70%);
+}
+
+:host-context(body.dark) .hero-card {
+	background:
+		linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+		var(--nav-bg);
+	border-color: rgba(255, 255, 255, 0.08);
+}
+
+:host-context(body.dark) .eyebrow {
+	background: rgba(255, 255, 255, 0.08);
+	color: var(--footer-heading);
+}
+
+:host-context(body.dark) .secondary-btn {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.12);
+}
+
+:host-context(body.dark) .highlight {
+	background: rgba(255, 255, 255, 0.05);
+	border-color: rgba(255, 255, 255, 0.08);
+}
+
+:host-context(body.dark) .info-card {
+	background: var(--nav-bg);
+	border-color: rgba(255, 255, 255, 0.06);
+}
+
+:host-context(body.dark) .info-card.accent {
+	background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)), var(--nav-bg);
+}
+
+:host-context(body.dark) .contact-band {
+	background: rgba(255, 255, 255, 0.06);
+	border-color: rgba(255, 255, 255, 0.08);
 }
 
 @media (max-width: 900px) {
