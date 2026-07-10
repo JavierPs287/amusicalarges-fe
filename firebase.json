@@ -1,6 +1,16 @@
 {
   "hosting": {
     "public": "dist/amusicalarges-fe/browser",
+    "predeploy": [
+      "npm ci",
+      "npm run build"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
