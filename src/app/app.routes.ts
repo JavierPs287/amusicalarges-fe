@@ -4,6 +4,7 @@ import { Actualidad } from './component/actualidad/actualidad';
 import { Calendario } from './component/calendario/calendario';
 import { Infobanda } from './component/infobanda/infobanda';
 import { Apuntate } from './component/apuntate/apuntate';
+import { Galeria } from './component/galeria/galeria';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -11,5 +12,6 @@ export const routes: Routes = [
     {path: 'actualidad', component: Actualidad},
     {path: 'calendario', component: Calendario},
     {path: 'infobanda', component: Infobanda},
-    {path: 'apuntate', component: Apuntate}
+    {path: 'apuntate', component: Apuntate},
+    {path: 'galeria', component: Galeria}
 ];

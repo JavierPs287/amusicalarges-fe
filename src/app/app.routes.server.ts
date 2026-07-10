@@ -24,5 +24,9 @@ export const serverRoutes: ServerRoute[] = [
   {
     path: 'apuntate',
     renderMode: RenderMode.Prerender
+  },
+  {
+    path: 'galeria',
+    renderMode: RenderMode.Prerender
   }
 ];

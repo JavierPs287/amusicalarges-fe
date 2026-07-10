@@ -1,0 +1,19 @@
+<main class="galeria-page">
+	<section class="galeria-hero">
+		<p class="galeria-kicker">Galería</p>
+		<h1>Un tablero de recuerdos</h1>
+		<p>
+			Una selección de fotos presentada estilo Pinterest, donde cada tarjeta conserva la proporción real de la imagen.
+		</p>
+	</section>
+
+	<section class="pinterest-board" aria-label="Galería de fotos">
+		<figure class="pinterest-card" *ngFor="let item of galleryItems">
+			<img [src]="item.src" [alt]="item.alt" loading="lazy" />
+			<figcaption>
+				<h2>{{ item.title }}</h2>
+				<p>{{ item.caption }}</p>
+			</figcaption>
+		</figure>
+	</section>
+</main>
