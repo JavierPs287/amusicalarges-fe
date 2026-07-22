@@ -1,0 +1,405 @@
+<section class="matriculacion-page">
+  <div class="page-header">
+    <h1>Matriculación</h1>
+    <p class="page-subtitle">
+      Rellena el siguiente formulario para inscribirte en la Escuela de Música para el curso
+      <strong>{{ curso }}</strong>. Al enviarlo se registrará tu matrícula en la base de datos de la Asociación.
+    </p>
+  </div>
+
+  <div class="actions-bar">
+    <button type="button" class="btn btn-primary" (click)="enviarAlBackend()" [disabled]="enviando">
+      <span *ngIf="!enviando">Enviar matrícula al servidor</span>
+      <span *ngIf="enviando">Enviando…</span>
+    </button>
+
+    <button type="button" class="btn btn-secondary" (click)="abrirDialogoPdf()">
+      Descargar como PDF
+    </button>
+
+    <a class="btn btn-ghost" routerLink="/apuntate">← Volver a Apúntate</a>
+  </div>
+
+  <div *ngIf="mensajeExito" class="alert alert-success" role="status">{{ mensajeExito }}</div>
+  <div *ngIf="mensajeError" class="alert alert-error" role="alert">{{ mensajeError }}</div>
+
+  <form id="sheet" #sheet (submit)="$event.preventDefault()">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-box">
+        <div class="hb-title">Alta/ Baja/ Modificación<br>en la Escuela de Música</div>
+      </div>
+      <div class="header-box">
+        <div class="hb-curso-label">Curso</div>
+        <div class="hb-curso-year">{{ curso }}</div>
+      </div>
+      <div class="header-box" style="padding-right:56px;">
+        <div class="hb-assoc">Asociación Musical<br>de Argés</div>
+      </div>
+      <img class="logo" [src]="logoUrl" alt="Escudo Asociación Musical de Argés">
+    </div>
+
+    <div id="outer-box">
+
+      <!-- DATOS DEL ALUMNO -->
+      <div class="section-title">DATOS DEL ALUMNO / INTEGRANTE DE LA BANDA</div>
+
+      <div class="field-row row-tall">
+        <div class="field-cell w-65">
+          <label for="nombre_apellidos_alumno">Nombre y apellidos</label>
+          <input type="text" id="nombre_apellidos_alumno" name="nombre_apellidos_alumno"
+                 [(ngModel)]="nombreApellidosAlumno">
+        </div>
+        <div class="field-cell w-35">
+          <label for="nif_cif">NIF/CIF</label>
+          <input type="text" id="nif_cif" name="nif_cif" [(ngModel)]="nifCif">
+        </div>
+      </div>
+
+      <div class="field-row row-tall">
+        <div class="field-cell w-55">
+          <label for="domicilio">Domicilio</label>
+          <input type="text" id="domicilio" name="domicilio" [(ngModel)]="domicilio">
+        </div>
+        <div class="field-cell w-45">
+          <label for="cp_poblacion">Código Postal y Población</label>
+          <input type="text" id="cp_poblacion" name="cp_poblacion" [(ngModel)]="cpPoblacion">
+        </div>
+      </div>
+
+      <div class="field-row row-short">
+        <div class="field-cell short edad-cell">
+          <label for="edad">Edad</label>
+          <input type="text" id="edad" name="edad" [(ngModel)]="edad">
+        </div>
+        <div class="field-cell short fecha-cell">
+          <label for="fecha_nacimiento">Fecha de nacimiento</label>
+          <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="dd/mm/aaaa"
+                 [(ngModel)]="fechaNacimiento">
+        </div>
+        <div class="field-cell short tel-cell">
+          <label for="telefono1">Teléfono 1</label>
+          <input type="text" id="telefono1" name="telefono1" [(ngModel)]="telefono1">
+        </div>
+        <div class="field-cell short tel-cell">
+          <label for="telefono2">Teléfono 2</label>
+          <input type="text" id="telefono2" name="telefono2" [(ngModel)]="telefono2">
+        </div>
+        <div class="field-cell short email-cell">
+          <label for="email">Email (obligatorio)</label>
+          <input type="email" id="email" name="email" required [(ngModel)]="email">
+        </div>
+      </div>
+
+      <div class="field-row row-short">
+        <div class="field-cell short w-full">
+          <label for="nombre_tutor">Nombre y Apellidos (madre/padre/tutor si menor de edad)</label>
+          <input type="text" id="nombre_tutor" name="nombre_tutor" [(ngModel)]="nombreTutor">
+        </div>
+      </div>
+
+      <!-- DATOS ACADEMICOS -->
+      <div class="section-title">DATOS ACADÉMICOS</div>
+
+      <div class="subsection-title">ASIGNATURAS EN LAS QUE SOLICITA LA INSCRIPCIÓN</div>
+      <div class="check-block">
+        <div class="check-grid asig-grid">
+          <label class="check-item">
+            <input type="checkbox" id="asig_lenguaje_musical" name="asig_lenguaje_musical"
+                   [(ngModel)]="asignaturas.lenguaje_musical">LENGUAJE MUSICAL (a partir de 8 años)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="asig_iniciacion_musical" name="asig_iniciacion_musical"
+                   [(ngModel)]="asignaturas.iniciacion_musical">INICIACIÓN MUSICAL (4-7 AÑOS)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="asig_instrumento" name="asig_instrumento"
+                   [(ngModel)]="asignaturas.instrumento">INSTRUMENTO (Seleccionar a continuación)
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="asig_iniciacion_instrumento" name="asig_iniciacion_instrumento"
+                   [(ngModel)]="asignaturas.iniciacion_instrumento">INICIACIÓN MUSICAL (4-7 AÑOS) CON INSTRUMENTO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="asig_canto" name="asig_canto"
+                   [(ngModel)]="asignaturas.canto">CANTO
+          </label>
+        </div>
+      </div>
+
+      <div class="subsection-title">ESPECIALIDADES INSTRUMENTALES</div>
+      <div class="check-block">
+        <div class="check-grid instr-grid">
+          <label class="check-item">
+            <input type="checkbox" name="inst_tuba" [(ngModel)]="especialidades.tuba">TUBA
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_trompeta" [(ngModel)]="especialidades.trompeta">TROMPETA
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_saxo_tenor" [(ngModel)]="especialidades.saxo_tenor">SAXO TENOR
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_piano" [(ngModel)]="especialidades.piano">PIANO
+          </label>
+
+          <label class="check-item">
+            <input type="checkbox" name="inst_bombardino" [(ngModel)]="especialidades.bombardino">BOMBARDINO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_fliscorno" [(ngModel)]="especialidades.fliscorno">FLISCORNO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_clarinete" [(ngModel)]="especialidades.clarinete">CLARINETE
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_guitarra_clasica" [(ngModel)]="especialidades.guitarra_clasica">GUITARRA CLÁSICA
+          </label>
+
+          <label class="check-item">
+            <input type="checkbox" name="inst_trombon" [(ngModel)]="especialidades.trombon">TROMBÓN
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_saxo_alto" [(ngModel)]="especialidades.saxo_alto">SAXO ALTO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_requinto" [(ngModel)]="especialidades.requinto">REQUINTO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_guitarra_electrica" [(ngModel)]="especialidades.guitarra_electrica">GUITARRA ELÉCTRICA
+          </label>
+
+          <label class="check-item">
+            <input type="checkbox" name="inst_trompa" [(ngModel)]="especialidades.trompa">TROMPA
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_saxo_soprano" [(ngModel)]="especialidades.saxo_soprano">SAXO SOPRANO
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_flauta" [(ngModel)]="especialidades.flauta">FLAUTA
+          </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_percusion" [(ngModel)]="especialidades.percusion">PERCUSIÓN
+          </label>
+
+          <div class="otros-line">
+            <label class="check-item" style="margin:0;">
+              <input type="checkbox" id="inst_otros" name="inst_otros"
+                     [(ngModel)]="especialidades.otros">OTROS
+            </label>
+            <input type="text" id="inst_otros_text" name="inst_otros_text" [(ngModel)]="instOtrosText">
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection-title">NIVEL DE LENGUAJE MUSICAL
+        <span class="light">(El nivel lo indicará el profesor)</span>
+      </div>
+      <div class="check-block" style="border-bottom:1px solid var(--line);">
+        <div class="nivel-row">
+          <label class="nivel-item">
+            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="1"
+                   [(ngModel)]="nivelLenguajeMusical">&nbsp;1
+          </label>
+          <label class="nivel-item">
+            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="2"
+                   [(ngModel)]="nivelLenguajeMusical">&nbsp;2
+          </label>
+          <label class="nivel-item">
+            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="3"
+                   [(ngModel)]="nivelLenguajeMusical">&nbsp;3
+          </label>
+          <label class="nivel-item">
+            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="4"
+                   [(ngModel)]="nivelLenguajeMusical">&nbsp;4
+          </label>
+        </div>
+      </div>
+
+      <!-- PRECIOS -->
+      <div class="precio-block" style="border-bottom:2px solid var(--line);">
+        <div style="font-weight:bold; font-size:14px; margin-bottom:6px;">PRECIO DE LAS CLASES</div>
+
+        <label class="precio-item">
+          <input type="checkbox" id="precio_lenguaje_musical" name="precio_lenguaje_musical"
+                 [(ngModel)]="precios.lenguaje_musical">
+          <span class="desc">LENGUAJE MUSICAL [1h./sem.]</span>
+          <span class="arrow">→</span>
+          <span class="precio-val">26€/mes</span>
+        </label>
+        <label class="precio-item">
+          <input type="checkbox" id="precio_iniciacion_musical" name="precio_iniciacion_musical"
+                 [(ngModel)]="precios.iniciacion_musical">
+          <span class="desc">INICIACIÓN MUSICAL (Solo)</span>
+          <span class="arrow">→</span>
+          <span class="precio-val">20€/mes (1h/semana)</span>
+        </label>
+        <label class="precio-item">
+          <input type="checkbox" id="precio_instrumento_canto" name="precio_instrumento_canto"
+                 [(ngModel)]="precios.instrumento_canto">
+          <span class="desc">INSTRUMENTO O CANTO (45min/sem) + LENGUAJE MUSICAL (1h./sem.)</span>
+          <span class="arrow">→</span>
+          <span class="precio-val">47 €/mes</span>
+        </label>
+
+        <ul class="notas">
+          <li>Las clases seguirán el Calendario Escolar de Argés.</li>
+          <li>Las cuotas de las mensualidades se abonarán íntegras. La matrícula tiene un coste de <b>10€</b>.</li>
+          <li>Las cuotas son mensuales, pero el compromiso de permanencia es trimestral.</li>
+          <li>Se informa que aquel alumno que falte con regularidad, podrá perder su horario reservado.</li>
+          <li>Bonificación del <b>10%</b> en las clases a partir del segundo familiar directo matriculado o de un segundo instrumento.</li>
+        </ul>
+      </div>
+
+      <!-- DATOS BANCARIOS -->
+      <div class="section-title">
+        DATOS DEL TITULAR DE LA CUENTA BANCARIA PARA DOMICILIACIÓN
+        <small>(Precio de la Matrícula 10€)</small>
+      </div>
+
+      <div class="field-row row-tall">
+        <div class="field-cell w-65">
+          <label for="titular_nombre">Nombre del Titular de la cuenta</label>
+          <input type="text" id="titular_nombre" name="titular_nombre" [(ngModel)]="titularNombre">
+        </div>
+        <div class="field-cell w-35">
+          <label for="titular_dni">DNI</label>
+          <input type="text" id="titular_dni" name="titular_dni" [(ngModel)]="titularDni">
+        </div>
+      </div>
+
+      <div class="field-row row-short">
+        <div class="field-cell short w-full">
+          <label for="entidad_nombre_poblacion">Nombre y Población de la entidad bancaria</label>
+          <input type="text" id="entidad_nombre_poblacion" name="entidad_nombre_poblacion"
+                 [(ngModel)]="entidadNombrePoblacion">
+        </div>
+      </div>
+
+      <div class="iban-wrap">
+        <div class="iban-boxes">
+          <ng-container *ngFor="let _ of ibanGroup(0, 4); let i = index">
+            <div class="cell" [class.grp-end]="i === 3">
+              <input maxlength="1" class="iban-digit"
+                     [name]="'iban_' + (i + 1)"
+                     [value]="ibanDigits[i]"
+                     (input)="onIbanInput(i, $event)"
+                     (keydown)="onIbanKeydown(i, $event)"
+                     (paste)="onIbanPaste(i, $event)"
+                     #ref
+                     [attr.aria-label]="'IBAN dígito ' + (i + 1)"
+                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let _ of ibanGroup(4, 8); let j = index">
+            <div class="cell" [class.grp-end]="j === 3">
+              <input maxlength="1" class="iban-digit"
+                     [name]="'codigo_entidad_' + (j + 1)"
+                     [value]="ibanDigits[4 + j]"
+                     (input)="onIbanInput(4 + j, $event)"
+                     (keydown)="onIbanKeydown(4 + j, $event)"
+                     (paste)="onIbanPaste(4 + j, $event)"
+                     #ref
+                     [attr.aria-label]="'Código Entidad dígito ' + (j + 1)"
+                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let _ of ibanGroup(8, 12); let k = index">
+            <div class="cell" [class.grp-end]="k === 3">
+              <input maxlength="1" class="iban-digit"
+                     [name]="'codigo_oficina_' + (k + 1)"
+                     [value]="ibanDigits[8 + k]"
+                     (input)="onIbanInput(8 + k, $event)"
+                     (keydown)="onIbanKeydown(8 + k, $event)"
+                     (paste)="onIbanPaste(8 + k, $event)"
+                     #ref
+                     [attr.aria-label]="'Código Oficina dígito ' + (k + 1)"
+                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let _ of ibanGroup(12, 14); let l = index">
+            <div class="cell" [class.grp-end]="l === 1">
+              <input maxlength="1" class="iban-digit"
+                     [name]="'dc_' + (l + 1)"
+                     [value]="ibanDigits[12 + l]"
+                     (input)="onIbanInput(12 + l, $event)"
+                     (keydown)="onIbanKeydown(12 + l, $event)"
+                     (paste)="onIbanPaste(12 + l, $event)"
+                     #ref
+                     [attr.aria-label]="'Dígito de Control ' + (l + 1)"
+                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let _ of ibanGroup(14, 24); let m = index">
+            <div class="cell">
+              <input maxlength="1" class="iban-digit"
+                     [name]="'numero_cuenta_' + (m + 1)"
+                     [value]="ibanDigits[14 + m]"
+                     (input)="onIbanInput(14 + m, $event)"
+                     (keydown)="onIbanKeydown(14 + m, $event)"
+                     (paste)="onIbanPaste(14 + m, $event)"
+                     #ref
+                     [attr.aria-label]="'Número de cuenta dígito ' + (m + 1)"
+                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+            </div>
+          </ng-container>
+        </div>
+        <div class="iban-labels">
+          <div class="lbl" style="flex:4;">IBAN</div>
+          <div class="lbl" style="flex:4;">Código Entidad</div>
+          <div class="lbl" style="flex:4;">Código Oficina</div>
+          <div class="lbl" style="flex:2;">DC</div>
+          <div class="lbl" style="flex:10;">Número de Cuenta</div>
+        </div>
+      </div>
+
+      <!-- LEGAL -->
+      <div class="legal">
+        <b>PROTECCION DE DATOS:</b> A los efectos previstos en el artículo 18 de la Ley Orgánica 3/2018, de 5 de diciembre,
+        de Datos de Carácter Personal, se les informa de que los datos consignados en el presente modelo serán incorporados
+        al Fichero de Alumnos. Respecto de los datos podrán ejercitar los derechos de acceso, rectificación y cancelación,
+        en los términos previos en la indicada Ley Orgánica 3/2018 a través del correo de la
+        Asociación: (<a href="mailto:musicalarges@hotmail.com">musicalarges@hotmail.com</a>) o WhatsApp: <b>613 026 837</b>
+      </div>
+
+    </div><!-- /outer-box -->
+
+    <!-- FIRMA -->
+    <div class="firma-row">
+      <div>FIRMADO</div>
+      <div class="firma-fecha">
+        En Argés, a
+        <input type="text" class="dia" id="firma_dia" name="firma_dia" [(ngModel)]="firmaDia">
+        de
+        <input type="text" class="mes" id="firma_mes" name="firma_mes" [(ngModel)]="firmaMes">
+        de 2025
+      </div>
+    </div>
+
+    <div class="footer-title">SR. PRESIDENTA DE LA ASOCIACIÓN MUSICAL DE ARGÉS</div>
+
+  </form>
+
+  <!-- Diálogo de opciones de PDF -->
+  <div *ngIf="mostrarDialogoPdf" class="pdf-dialog-backdrop" (click)="cerrarDialogoPdf()">
+    <div class="pdf-dialog" role="dialog" aria-modal="true" aria-labelledby="pdf-dialog-title"
+         (click)="$event.stopPropagation()">
+      <h2 id="pdf-dialog-title">Descargar como PDF</h2>
+      <p>Elige cómo quieres generar el PDF:</p>
+      <div class="pdf-dialog-actions">
+        <button type="button" class="btn btn-primary" (click)="descargarPdfConDatos()">
+          Con los datos rellenados
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="descargarPdfVacio()">
+          En blanco (para imprimir y rellenar a mano)
+        </button>
+        <button type="button" class="btn btn-ghost" (click)="cerrarDialogoPdf()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section>
