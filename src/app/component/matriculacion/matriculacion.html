@@ -20,7 +20,6 @@
     <a class="btn btn-ghost" routerLink="/apuntate">← Volver a Apúntate</a>
   </div>
 
-  <div *ngIf="mensajeExito" class="alert alert-success" role="status">{{ mensajeExito }}</div>
   <div *ngIf="mensajeError" class="alert alert-error" role="alert">{{ mensajeError }}</div>
 
   <form id="sheet" #sheet (submit)="$event.preventDefault()">
@@ -121,10 +120,6 @@
             <input type="checkbox" id="asig_iniciacion_instrumento" name="asig_iniciacion_instrumento"
                    [(ngModel)]="asignaturas.iniciacion_instrumento">INICIACIÓN MUSICAL (4-7 AÑOS) CON INSTRUMENTO
           </label>
-          <label class="check-item">
-            <input type="checkbox" id="asig_canto" name="asig_canto"
-                   [(ngModel)]="asignaturas.canto">CANTO
-          </label>
         </div>
       </div>
 
@@ -183,65 +178,35 @@
             <input type="checkbox" name="inst_percusion" [(ngModel)]="especialidades.percusion">PERCUSIÓN
           </label>
 
-          <div class="otros-line">
-            <label class="check-item" style="margin:0;">
-              <input type="checkbox" id="inst_otros" name="inst_otros"
-                     [(ngModel)]="especialidades.otros">OTROS
-            </label>
+          <label class="check-item">
+            <input type="checkbox" name="inst_canto" [(ngModel)]="especialidades.canto">CANTO
+          </label>
+          <label class="check-item check-item-otros">
+            <input type="checkbox" id="inst_otros" name="inst_otros"
+                   [(ngModel)]="especialidades.otros">OTROS
             <input type="text" id="inst_otros_text" name="inst_otros_text" [(ngModel)]="instOtrosText">
-          </div>
-        </div>
-      </div>
-
-      <div class="subsection-title">NIVEL DE LENGUAJE MUSICAL
-        <span class="light">(El nivel lo indicará el profesor)</span>
-      </div>
-      <div class="check-block" style="border-bottom:1px solid var(--line);">
-        <div class="nivel-row">
-          <label class="nivel-item">
-            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="1"
-                   [(ngModel)]="nivelLenguajeMusical">&nbsp;1
-          </label>
-          <label class="nivel-item">
-            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="2"
-                   [(ngModel)]="nivelLenguajeMusical">&nbsp;2
-          </label>
-          <label class="nivel-item">
-            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="3"
-                   [(ngModel)]="nivelLenguajeMusical">&nbsp;3
-          </label>
-          <label class="nivel-item">
-            <input type="radio" class="sq" name="nivel_lenguaje_musical" value="4"
-                   [(ngModel)]="nivelLenguajeMusical">&nbsp;4
           </label>
         </div>
       </div>
-
       <!-- PRECIOS -->
       <div class="precio-block" style="border-bottom:2px solid var(--line);">
         <div style="font-weight:bold; font-size:14px; margin-bottom:6px;">PRECIO DE LAS CLASES</div>
 
-        <label class="precio-item">
-          <input type="checkbox" id="precio_lenguaje_musical" name="precio_lenguaje_musical"
-                 [(ngModel)]="precios.lenguaje_musical">
+        <div class="precio-item">
           <span class="desc">LENGUAJE MUSICAL [1h./sem.]</span>
           <span class="arrow">→</span>
           <span class="precio-val">26€/mes</span>
-        </label>
-        <label class="precio-item">
-          <input type="checkbox" id="precio_iniciacion_musical" name="precio_iniciacion_musical"
-                 [(ngModel)]="precios.iniciacion_musical">
+        </div>
+        <div class="precio-item">
           <span class="desc">INICIACIÓN MUSICAL (Solo)</span>
           <span class="arrow">→</span>
           <span class="precio-val">20€/mes (1h/semana)</span>
-        </label>
-        <label class="precio-item">
-          <input type="checkbox" id="precio_instrumento_canto" name="precio_instrumento_canto"
-                 [(ngModel)]="precios.instrumento_canto">
+        </div>
+        <div class="precio-item">
           <span class="desc">INSTRUMENTO O CANTO (45min/sem) + LENGUAJE MUSICAL (1h./sem.)</span>
           <span class="arrow">→</span>
           <span class="precio-val">47 €/mes</span>
-        </label>
+        </div>
 
         <ul class="notas">
           <li>Las clases seguirán el Calendario Escolar de Argés.</li>
@@ -279,76 +244,95 @@
 
       <div class="iban-wrap">
         <div class="iban-boxes">
+
+          <!-- IBAN -->
           <ng-container *ngFor="let _ of ibanGroup(0, 4); let i = index">
             <div class="cell" [class.grp-end]="i === 3">
-              <input maxlength="1" class="iban-digit"
-                     [name]="'iban_' + (i + 1)"
-                     [value]="ibanDigits[i]"
-                     (input)="onIbanInput(i, $event)"
-                     (keydown)="onIbanKeydown(i, $event)"
-                     (paste)="onIbanPaste(i, $event)"
-                     #ref
-                     [attr.aria-label]="'IBAN dígito ' + (i + 1)"
-                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+              <input
+                #ibanInput
+                maxlength="1"
+                class="iban-digit"
+                [name]="'iban_' + (i + 1)"
+                [(ngModel)]="ibanDigits[i]"
+                (input)="onIbanInput(i, $event)"
+                (keydown)="onIbanKeydown(i, $event)"
+                (paste)="onIbanPaste(i, $event)"
+                [attr.aria-label]="'IBAN dígito ' + (i + 1)"
+                style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
             </div>
           </ng-container>
 
+          <!-- CÓDIGO ENTIDAD -->
           <ng-container *ngFor="let _ of ibanGroup(4, 8); let j = index">
             <div class="cell" [class.grp-end]="j === 3">
-              <input maxlength="1" class="iban-digit"
-                     [name]="'codigo_entidad_' + (j + 1)"
-                     [value]="ibanDigits[4 + j]"
-                     (input)="onIbanInput(4 + j, $event)"
-                     (keydown)="onIbanKeydown(4 + j, $event)"
-                     (paste)="onIbanPaste(4 + j, $event)"
-                     #ref
-                     [attr.aria-label]="'Código Entidad dígito ' + (j + 1)"
-                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+              <input
+                #ibanInput
+                maxlength="1"
+                class="iban-digit"
+                [name]="'codigo_entidad_' + (j + 1)"
+                [(ngModel)]="ibanDigits[4 + j]"
+                (input)="onIbanInput(4 + j, $event)"
+                (keydown)="onIbanKeydown(4 + j, $event)"
+                (paste)="onIbanPaste(4 + j, $event)"
+                [attr.aria-label]="'Código Entidad dígito ' + (j + 1)"
+                style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
             </div>
           </ng-container>
 
+          <!-- CÓDIGO OFICINA -->
           <ng-container *ngFor="let _ of ibanGroup(8, 12); let k = index">
             <div class="cell" [class.grp-end]="k === 3">
-              <input maxlength="1" class="iban-digit"
-                     [name]="'codigo_oficina_' + (k + 1)"
-                     [value]="ibanDigits[8 + k]"
-                     (input)="onIbanInput(8 + k, $event)"
-                     (keydown)="onIbanKeydown(8 + k, $event)"
-                     (paste)="onIbanPaste(8 + k, $event)"
-                     #ref
-                     [attr.aria-label]="'Código Oficina dígito ' + (k + 1)"
-                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+              <input
+                #ibanInput
+                maxlength="1"
+                class="iban-digit"
+                [name]="'codigo_oficina_' + (k + 1)"
+                [(ngModel)]="ibanDigits[8 + k]"
+                (input)="onIbanInput(8 + k, $event)"
+                (keydown)="onIbanKeydown(8 + k, $event)"
+                (paste)="onIbanPaste(8 + k, $event)"
+                [attr.aria-label]="'Código Oficina dígito ' + (k + 1)"
+                style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
             </div>
           </ng-container>
 
+          <!-- DC -->
           <ng-container *ngFor="let _ of ibanGroup(12, 14); let l = index">
             <div class="cell" [class.grp-end]="l === 1">
-              <input maxlength="1" class="iban-digit"
-                     [name]="'dc_' + (l + 1)"
-                     [value]="ibanDigits[12 + l]"
-                     (input)="onIbanInput(12 + l, $event)"
-                     (keydown)="onIbanKeydown(12 + l, $event)"
-                     (paste)="onIbanPaste(12 + l, $event)"
-                     #ref
-                     [attr.aria-label]="'Dígito de Control ' + (l + 1)"
-                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+              <input
+                #ibanInput
+                maxlength="1"
+                class="iban-digit"
+                [name]="'dc_' + (l + 1)"
+                [(ngModel)]="ibanDigits[12 + l]"
+                (input)="onIbanInput(12 + l, $event)"
+                (keydown)="onIbanKeydown(12 + l, $event)"
+                (paste)="onIbanPaste(12 + l, $event)"
+                [attr.aria-label]="'Dígito de Control ' + (l + 1)"
+                style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
             </div>
           </ng-container>
 
+          <!-- NÚMERO DE CUENTA -->
           <ng-container *ngFor="let _ of ibanGroup(14, 24); let m = index">
             <div class="cell">
-              <input maxlength="1" class="iban-digit"
-                     [name]="'numero_cuenta_' + (m + 1)"
-                     [value]="ibanDigits[14 + m]"
-                     (input)="onIbanInput(14 + m, $event)"
-                     (keydown)="onIbanKeydown(14 + m, $event)"
-                     (paste)="onIbanPaste(14 + m, $event)"
-                     #ref
-                     [attr.aria-label]="'Número de cuenta dígito ' + (m + 1)"
-                     style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
+              <input
+                #ibanInput
+                maxlength="1"
+                class="iban-digit"
+                [name]="'numero_cuenta_' + (m + 1)"
+                [(ngModel)]="ibanDigits[14 + m]"
+                (input)="onIbanInput(14 + m, $event)"
+                (keydown)="onIbanKeydown(14 + m, $event)"
+                (paste)="onIbanPaste(14 + m, $event)"
+                [attr.aria-label]="'Número de cuenta dígito ' + (m + 1)"
+                style="width:100%;height:100%;border:none;text-align:center;font-size:13px;">
             </div>
           </ng-container>
+
         </div>
+      </div>
+
         <div class="iban-labels">
           <div class="lbl" style="flex:4;">IBAN</div>
           <div class="lbl" style="flex:4;">Código Entidad</div>
@@ -366,9 +350,7 @@
         en los términos previos en la indicada Ley Orgánica 3/2018 a través del correo de la
         Asociación: (<a href="mailto:musicalarges@hotmail.com">musicalarges@hotmail.com</a>) o WhatsApp: <b>613 026 837</b>
       </div>
-
-    </div><!-- /outer-box -->
-
+      
     <!-- FIRMA -->
     <div class="firma-row">
       <div>FIRMADO</div>
@@ -403,3 +385,32 @@
     </div>
   </div>
 </section>
+
+<div
+  *ngIf="mostrarDialogoExito"
+  class="pdf-dialog-backdrop"
+  (click)="cerrarDialogoExito()">
+
+  <div
+    class="pdf-dialog"
+    role="dialog"
+    aria-modal="true"
+    (click)="$event.stopPropagation()">
+
+    <h2>Matrícula enviada correctamente</h2>
+
+    <p>
+      Tu matrícula ha sido registrada correctamente.
+    </p>
+
+    <div class="pdf-dialog-actions">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="cerrarDialogoExito()">
+        Aceptar
+      </button>
+    </div>
+
+  </div>
+</div>

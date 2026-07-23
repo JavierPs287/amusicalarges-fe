@@ -1,3 +1,4 @@
+/* TODO: Añadir modificacion para movil */
 /* ===================== PAGE WRAPPER ===================== */
 .matriculacion-page {
   margin-top: 4rem;
@@ -332,6 +333,11 @@ input[type=checkbox]:checked, input[type=radio].sq:checked {
   padding: 2px 0;
 }
 
+.check-item-otros{
+  grid-column: span 3;
+  align-items: left;
+}
+
 .asig-grid { grid-template-columns: 1fr 1fr; column-gap: 20px; }
 .instr-grid { grid-template-columns: repeat(4, 1fr); column-gap: 6px; }
 
@@ -353,20 +359,6 @@ input[type=checkbox]:checked, input[type=radio].sq:checked {
   margin-left: 4px;
   padding: 2px 1px;
   color: #000;
-}
-
-.nivel-row {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  padding: 4px 0 10px;
-}
-
-.nivel-item {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: normal;
 }
 
 .precio-block {
@@ -510,6 +502,15 @@ ul.notas b { font-weight: bold; }
   #sheet,
   #sheet * {
     visibility: visible !important;
+  }
+
+  input[type=checkbox],
+  input[type=radio].sq {
+    -webkit-appearance: auto !important;
+    appearance: auto !important;
+    accent-color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
 
   /* El formulario ocupa toda la página */

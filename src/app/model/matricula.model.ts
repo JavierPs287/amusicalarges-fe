@@ -18,12 +18,6 @@ export interface Matricula {
   especialidades: string[];
   instOtrosText: string;
 
-  // Nivel de lenguaje musical
-  nivelLenguajeMusical: string;
-
-  // Precios seleccionados
-  precios: string[];
-
   // Datos bancarios
   titularNombre: string;
   titularDni: string;

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, PLATFORM_ID, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, PLATFORM_ID, Inject, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -16,12 +16,14 @@ import { Matricula } from '../../model/matricula.model';
 export class Matriculacion implements OnInit, AfterViewInit {
 
   @ViewChild('sheet', { static: false }) sheetRef?: ElementRef<HTMLFormElement>;
+  @ViewChildren('ibanInput')
+  ibanInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
   // Estado UI
   enviando = false;
-  mensajeExito: string | null = null;
   mensajeError: string | null = null;
   mostrarDialogoPdf = false;
+  mostrarDialogoExito = false;
 
   // Datos del alumno
   nombreApellidosAlumno = '';
@@ -41,7 +43,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
     iniciacion_musical: false,
     instrumento: false,
     iniciacion_instrumento: false,
-    canto: false,
   };
 
   // Especialidades instrumentales
@@ -62,19 +63,10 @@ export class Matriculacion implements OnInit, AfterViewInit {
     saxo_soprano: false,
     flauta: false,
     percusion: false,
+    canto: false,
     otros: false,
   };
   instOtrosText = '';
-
-  // Nivel
-  nivelLenguajeMusical = '';
-
-  // Precios
-  precios = {
-    lenguaje_musical: false,
-    iniciacion_musical: false,
-    instrumento_canto: false,
-  };
 
   // Datos bancarios
   titularNombre = '';
@@ -85,9 +77,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
   // Fecha firma
   firmaDia = '';
   firmaMes = '';
-
-  // IBAN cells: referencias para autofocus tras pegar
-  ibanInputRefs: (HTMLInputElement | null)[] = new Array(24).fill(null);
 
   // Logo de la asociación (la ruta física está en FE/src/assets o en public)
   // Reutilizamos el logo de la web
@@ -116,28 +105,32 @@ export class Matriculacion implements OnInit, AfterViewInit {
   // === IBAN ===
   onIbanInput(idx: number, event: Event): void {
     const input = event.target as HTMLInputElement;
-    const val = (input.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 1);
-    this.ibanDigits[idx] = val;
-    input.value = val;
-    if (val && idx < this.ibanDigits.length - 1) {
-      this.ibanInputRefs[idx + 1]?.focus();
-      this.ibanInputRefs[idx + 1]?.select();
+
+    if (input.value && idx < this.ibanDigits.length - 1) {
+      setTimeout(() => {
+        const nextInput = this.ibanInputs.get(idx + 1)?.nativeElement;
+
+        if (nextInput) {
+          nextInput.focus();
+          nextInput.select();
+        }
+      });
     }
   }
 
   onIbanKeydown(idx: number, event: KeyboardEvent): void {
     if (event.key === 'Backspace' && !this.ibanDigits[idx] && idx > 0) {
-      this.ibanInputRefs[idx - 1]?.focus();
-      this.ibanInputRefs[idx - 1]?.select();
+      this.ibanInputs.toArray()[idx - 1]?.nativeElement.focus();
+      this.ibanInputs.toArray()[idx - 1]?.nativeElement.select();
       event.preventDefault();
     } else if (event.key === 'ArrowLeft' && idx > 0) {
       event.preventDefault();
-      this.ibanInputRefs[idx - 1]?.focus();
-      this.ibanInputRefs[idx - 1]?.select();
+      this.ibanInputs.toArray()[idx - 1]?.nativeElement.focus();
+      this.ibanInputs.toArray()[idx - 1]?.nativeElement.select();
     } else if (event.key === 'ArrowRight' && idx < this.ibanDigits.length - 1) {
       event.preventDefault();
-      this.ibanInputRefs[idx + 1]?.focus();
-      this.ibanInputRefs[idx + 1]?.select();
+      this.ibanInputs.toArray()[idx + 1]?.nativeElement.focus();
+      this.ibanInputs.toArray()[idx + 1]?.nativeElement.select();
     }
   }
 
@@ -147,16 +140,12 @@ export class Matriculacion implements OnInit, AfterViewInit {
     const clean = text.toUpperCase().replace(/\s+/g, '').replace(/[^A-Z0-9]/g, '');
     for (let i = 0; i < clean.length && idx + i < this.ibanDigits.length; i++) {
       this.ibanDigits[idx + i] = clean[i];
-      const ref = this.ibanInputRefs[idx + i];
-      if (ref) ref.value = clean[i];
+      const ref = this.ibanInputs.toArray()[idx + i];
+      if (ref) ref.nativeElement.value = clean[i];
     }
     const next = Math.min(idx + clean.length, this.ibanDigits.length - 1);
-    this.ibanInputRefs[next]?.focus();
-    this.ibanInputRefs[next]?.select();
-  }
-
-  setIbanRef(idx: number, el: HTMLInputElement | null): void {
-    this.ibanInputRefs[idx] = el;
+    this.ibanInputs.toArray()[next]?.nativeElement.focus();
+    this.ibanInputs.toArray()[next]?.nativeElement.select();
   }
 
   get ibanCompleto(): string {
@@ -171,7 +160,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
   // === Acciones ===
   enviarAlBackend(): void {
     this.mensajeError = null;
-    this.mensajeExito = null;
 
     if (!this.email || !this.email.trim()) {
       this.mensajeError = 'El email es obligatorio para poder enviar la matrícula.';
@@ -196,8 +184,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
       asignaturas: Object.entries(this.asignaturas).filter(([_, v]) => v).map(([k]) => k),
       especialidades: Object.entries(this.especialidades).filter(([_, v]) => v).map(([k]) => k),
       instOtrosText: this.instOtrosText.trim(),
-      nivelLenguajeMusical: this.nivelLenguajeMusical,
-      precios: Object.entries(this.precios).filter(([_, v]) => v).map(([k]) => k),
       titularNombre: this.titularNombre.trim(),
       titularDni: this.titularDni.trim(),
       entidadNombrePoblacion: this.entidadNombrePoblacion.trim(),
@@ -211,7 +197,7 @@ export class Matriculacion implements OnInit, AfterViewInit {
     this.matriculaService.addMatricula(matricula).subscribe({
       next: () => {
         this.enviando = false;
-        this.mensajeExito = '¡Matrícula enviada correctamente! Te contactaremos al email facilitado.';
+        this.mostrarDialogoExito = true;
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -221,6 +207,73 @@ export class Matriculacion implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  /**
+   * Cierra el popup de éxito y reinicia el formulario para una nueva matrícula.
+   */
+  cerrarDialogoExito(): void {
+    this.mostrarDialogoExito = false;
+    this.resetForm();
+    this.cdr.detectChanges();
+  }
+
+  /**
+   * Reinicia todos los campos del formulario a su estado inicial.
+   */
+  private resetForm(): void {
+    this.nombreApellidosAlumno = '';
+    this.nifCif = '';
+    this.domicilio = '';
+    this.cpPoblacion = '';
+    this.edad = '';
+    this.fechaNacimiento = '';
+    this.telefono1 = '';
+    this.telefono2 = '';
+    this.email = '';
+    this.nombreTutor = '';
+
+    this.asignaturas = {
+      lenguaje_musical: false,
+      iniciacion_musical: false,
+      instrumento: false,
+      iniciacion_instrumento: false,
+    };
+
+    this.especialidades = {
+      tuba: false,
+      trompeta: false,
+      saxo_tenor: false,
+      piano: false,
+      bombardino: false,
+      fliscorno: false,
+      clarinete: false,
+      guitarra_clasica: false,
+      trombon: false,
+      saxo_alto: false,
+      requinto: false,
+      guitarra_electrica: false,
+      trompa: false,
+      saxo_soprano: false,
+      flauta: false,
+      percusion: false,
+      canto: false,
+      otros: false,
+    };
+    this.instOtrosText = '';
+
+    this.titularNombre = '';
+    this.titularDni = '';
+    this.entidadNombrePoblacion = '';
+    this.ibanDigits = new Array(24).fill('');
+    this.ibanInputs.forEach((ref) => {
+      if (ref) ref.nativeElement.value = '';
+    });
+
+    this.firmaDia = '';
+    this.firmaMes = '';
+
+    this.mensajeError = null;
   }
 
   // === PDF ===
@@ -290,9 +343,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
    */
   private isInputChecked(el: HTMLInputElement): boolean {
     const name = el.name;
-    if (el.type === 'radio') {
-      return el.value === this.nivelLenguajeMusical && el.value !== '';
-    }
     if (el.type === 'checkbox') {
       if (name && name.startsWith('asig_')) {
         const key = name.replace('asig_', '') as keyof typeof this.asignaturas;
@@ -301,10 +351,6 @@ export class Matriculacion implements OnInit, AfterViewInit {
       if (name && name.startsWith('inst_') && name !== 'inst_otros_text') {
         const key = name.replace('inst_', '') as keyof typeof this.especialidades;
         return !!this.especialidades[key];
-      }
-      if (name && name.startsWith('precio_')) {
-        const key = name.replace('precio_', '') as keyof typeof this.precios;
-        return !!this.precios[key];
       }
     }
     return el.checked;

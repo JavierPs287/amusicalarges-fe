@@ -15,8 +15,9 @@ export class MatriculaService {
 
   /**
    * Envía los datos de la matrícula al backend para que se persistan en la BD.
+   * El backend solo responde con un 200 OK sin body.
    */
-  addMatricula(matricula: Matricula): Observable<Matricula> {
-    return this.http.post<Matricula>(`${this.apiUrl}/matricular`, matricula);
+  addMatricula(matricula: Matricula): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/matricular`, matricula);
   }
 }
