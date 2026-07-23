@@ -537,7 +537,7 @@ ul.notas b { font-weight: bold; }
     break-inside: avoid !important;
 
     /* Ajusta este valor si aún no cabe en una sola página */
-    zoom: 0.87;
+    zoom: 0.94;
   }
 
   /* Evita saltos internos */
